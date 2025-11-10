@@ -1,16 +1,9 @@
-# Core dependencies
 streamlit==1.39.0
 langchain==0.2.14
-langchain_groq==0.0.6
+langchain_groq==0.3.8
 python-dotenv==1.0.1
-
-# Stable data libraries (precompiled)
 numpy==1.26.4
 pandas==2.2.2
-
-# Common utilities
 requests==2.32.3
-
-# Avoid building from source
 wheel
 setuptools
