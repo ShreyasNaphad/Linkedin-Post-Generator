@@ -34,12 +34,25 @@ st.markdown("""
         color: #66fcf1 !important;
     }
 
-    /* 3. Inputs & Text Areas */
+    /* 3. Inputs & Text Areas - FORCE TEXT COLOR FOR RENDER */
     .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] > div {
         background-color: #2b3542 !important;
         color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         border: 1px solid #45a29e !important;
         border-radius: 8px;
+    }
+    
+    /* Placeholder Text Visibility */
+    ::placeholder {
+        color: #a0b4b7 !important;
+        opacity: 1 !important;
+    }
+    
+    /* Dropdown Menu Items */
+    div[data-baseweb="popover"] div {
+        background-color: #1f2833 !important;
+        color: #ffffff !important;
     }
 
     /* 4. Headers */
@@ -103,32 +116,31 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# --- SCROLLING JAVASCRIPT FIX ---
+# --- SCROLLING JAVASCRIPT FUNCTIONS ---
 def scroll_to_top():
-    """Scrolls to the top of the main container."""
+    """Scrolls to the top with a delay to ensure the UI has redrawn."""
     js = '''
     <script>
-        // Target the specific Streamlit app container
-        var body = window.parent.document.querySelector('div[data-testid="stAppViewContainer"]');
-        if (body) {
-            body.scrollTop = 0;
-        }
+        setTimeout(function() {
+            var body = window.parent.document.querySelector('div[data-testid="stAppViewContainer"]');
+            if (body) {
+                body.scrollTop = 0;
+            }
+        }, 100); // 100ms delay
     </script>
     '''
     components.html(js, height=0)
 
-
 def scroll_to_bottom():
-    """Scrolls to the bottom with a slight delay to ensure content loads."""
+    """Scrolls to the bottom with a delay."""
     js = '''
     <script>
-        // Timeout ensures the DOM is ready before we scroll
         setTimeout(function() {
             var body = window.parent.document.querySelector('div[data-testid="stAppViewContainer"]');
             if (body) {
                 body.scrollTop = body.scrollHeight;
             }
-        }, 100);
+        }, 100); // 100ms delay
     </script>
     '''
     components.html(js, height=0)
@@ -151,7 +163,7 @@ def main():
 
         selected_tag = st.selectbox("🎯 Topic", options=tags)
         selected_length = st.selectbox("📏 Length", options=["Short", "Medium", "Long"])
-        selected_language = st.selectbox("🌐 Language", options=["English"])
+        selected_language = st.selectbox("🌐 Language", options=["English", "Hinglish"])
 
         st.markdown("---")
         st.markdown("### 🔧 Settings")
@@ -321,6 +333,7 @@ def main():
 
         else:
             if st.session_state.step == 1:
+                # Aligned and styled Instruction Box
                 st.markdown("""
 <div style="background-color: #161b22; border: 2px dashed #45a29e; border-radius: 12px; padding: 25px; text-align: center;">
     <div style="font-size: 2.5rem; margin-bottom: 10px;">👋</div>
