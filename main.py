@@ -211,7 +211,7 @@ def main():
     col1, col2 = st.columns([1.1, 0.9])
 
     with col1:
-        st.markdown('<div class="main-title">LinkedIn Creator</div>', unsafe_allow_html=True)
+        st.markdown('<div class="main-title">LinkedIn Post Generator</div>', unsafe_allow_html=True)
         st.markdown('<div class="sub-title">Turn messy thoughts into viral influence.</div>', unsafe_allow_html=True)
 
         # 1. URL Importer
@@ -408,4 +408,5 @@ def generate_final_post(length, language, tag, ref_text, strict_mode, hook, hash
 
 if __name__ == "__main__":
     main()
+
 
