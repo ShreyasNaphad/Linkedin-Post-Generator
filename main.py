@@ -231,7 +231,7 @@ def main():
                     st.warning("Paste a URL first.")
 
         # 2. Text Input
-        st.markdown("##### 💡 Source Material / Notes")
+        st.markdown("##### 💡 Source Material / Notes (Optional)")
         reference_text = st.text_area(
             "Reference Text",
             value=st.session_state.reference_content,
@@ -408,5 +408,6 @@ def generate_final_post(length, language, tag, ref_text, strict_mode, hook, hash
 
 if __name__ == "__main__":
     main()
+
 
 
