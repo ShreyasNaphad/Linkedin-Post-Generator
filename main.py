@@ -187,7 +187,7 @@ def main():
 
         selected_tag = st.selectbox("🎯 Topic", options=tags)
         selected_length = st.selectbox("📏 Length", options=["Short", "Medium", "Long"])
-        selected_language = st.selectbox("🌐 Language", options=["English", "Hinglish"])
+        selected_language = st.selectbox("🌐 Language", options=["English"])
 
         st.markdown("---")
         st.markdown("### 🔧 Settings")
@@ -323,7 +323,7 @@ def main():
         if st.session_state.generated_post:
             scroll_to_top()
 
-            st.markdown("##### 📱 Dark Mode Preview")
+            st.markdown("##### 📱 Generated Content")
 
             full_text = st.session_state.generated_post
             if st.session_state.generated_hashtags:
@@ -363,15 +363,15 @@ def main():
     <div style="text-align: left; display: inline-block; color: #c5c6c7; font-size: 0.9rem;">
         <div style="margin-bottom: 8px;">
             <span style="color: #66fcf1; font-weight: bold;">1.</span> 
-            Import a URL or paste your notes.
+            Select a Topic & Length.
         </div>
         <div style="margin-bottom: 8px;">
             <span style="color: #66fcf1; font-weight: bold;">2.</span> 
-            Select a Topic & Length.
+            Import a URL or any existing content (Optional)
         </div>
         <div>
             <span style="color: #66fcf1; font-weight: bold;">3.</span> 
-            Click <b>Generate Hooks</b> to start.
+            Click Either<b>Quick Generate or Generate Hooks</b> to start.
         </div>
     </div>
 </div>
@@ -408,3 +408,4 @@ def generate_final_post(length, language, tag, ref_text, strict_mode, hook, hash
 
 if __name__ == "__main__":
     main()
+
