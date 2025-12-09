@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- Custom CSS (Premium Dark Mode) ---
+# --- Custom CSS (Premium Dark Mode + Mobile Responsive) ---
 st.markdown("""
 <style>
     /* 1. Global Dark Theme */
@@ -34,13 +34,17 @@ st.markdown("""
         color: #66fcf1 !important;
     }
 
-    /* 3. Inputs & Text Areas */
+    /* 3. Inputs & Text Areas - FORCE TEXT COLOR FOR RENDER */
     .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] > div {
         background-color: #2b3542 !important;
         color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         border: 1px solid #45a29e !important;
         border-radius: 8px;
     }
+    
+    ::placeholder { color: #a0b4b7 !important; opacity: 1 !important; }
+    div[data-baseweb="popover"] div { background-color: #1f2833 !important; color: #ffffff !important; }
 
     /* 4. Headers */
     .main-title {
@@ -99,30 +103,62 @@ st.markdown("""
     .secondary-btn button { background: transparent !important; color: #c5c6c7 !important; border: 2px solid #45a29e !important; }
     .stButton button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 252, 241, 0.2); }
     code { color: #66fcf1; background-color: #1f2833; }
+
+    /* --- MOBILE OPTIMIZATION --- */
+    @media only screen and (max-width: 600px) {
+        /* Shrink the huge title */
+        .main-title {
+            font-size: 2rem !important;
+            text-align: center;
+        }
+        .sub-title {
+            font-size: 0.9rem !important;
+            text-align: center;
+            margin-bottom: 1rem !important;
+        }
+        
+        /* Reduce padding on cards to save space */
+        .linkedin-card, .hook-option, div[style*="padding: 25px"] {
+            padding: 15px !important;
+            margin-top: 1rem !important;
+        }
+        
+        /* Make avatars smaller on mobile */
+        .avatar {
+            width: 40px;
+            height: 40px;
+            font-size: 0.8rem;
+        }
+        
+        /* Adjust buttons */
+        .stButton button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
 
-# --- SCROLLING JAVASCRIPT FIX ---
+# --- SCROLLING JAVASCRIPT FUNCTIONS ---
 def scroll_to_top():
-    """Scrolls to the top of the main container."""
+    """Scrolls to the top with a delay to ensure the UI has redrawn."""
     js = '''
     <script>
-        // Target the specific Streamlit app container
-        var body = window.parent.document.querySelector('div[data-testid="stAppViewContainer"]');
-        if (body) {
-            body.scrollTop = 0;
-        }
+        setTimeout(function() {
+            var body = window.parent.document.querySelector('div[data-testid="stAppViewContainer"]');
+            if (body) {
+                body.scrollTop = 0;
+            }
+        }, 100); 
     </script>
     '''
     components.html(js, height=0)
 
-
 def scroll_to_bottom():
-    """Scrolls to the bottom with a slight delay to ensure content loads."""
+    """Scrolls to the bottom with a delay."""
     js = '''
     <script>
-        // Timeout ensures the DOM is ready before we scroll
         setTimeout(function() {
             var body = window.parent.document.querySelector('div[data-testid="stAppViewContainer"]');
             if (body) {
@@ -151,7 +187,7 @@ def main():
 
         selected_tag = st.selectbox("🎯 Topic", options=tags)
         selected_length = st.selectbox("📏 Length", options=["Short", "Medium", "Long"])
-        selected_language = st.selectbox("🌐 Language", options=["English"])
+        selected_language = st.selectbox("🌐 Language", options=["English", "Hinglish"])
 
         st.markdown("---")
         st.markdown("### 🔧 Settings")
@@ -241,7 +277,6 @@ def main():
 
         # [STEP 2] Choose Hook & Generate Post
         elif st.session_state.step == 2:
-            # --- FORCE SCROLL BOTTOM ---
             scroll_to_bottom()
 
             st.info("👇 Choose the best opening line to generate the full post.")
@@ -286,7 +321,6 @@ def main():
     # === RIGHT COLUMN: Preview ===
     with col2:
         if st.session_state.generated_post:
-            # --- FORCE SCROLL TOP ---
             scroll_to_top()
 
             st.markdown("##### 📱 Dark Mode Preview")
